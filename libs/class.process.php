@@ -253,7 +253,7 @@ class ProcessCSV
 
 	function terminate($msg='')
 	{
-		if (file_exists('./.user_upload.lock'))
+		if (file_exists('.user_upload.lock'))
 		{
 			unlink('.user_upload.lock');
 		}
