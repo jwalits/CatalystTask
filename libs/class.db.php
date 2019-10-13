@@ -15,22 +15,24 @@ class DB
 	function __construct($username, $password, $host, $databaseName)
 	{
 		$this->host = $host;
-		$this->username = $user;
-		$this->password = $pass;
+		$this->username = $username;
+		$this->password = $password;
 		$this->databaseName = $databaseName;
 	}
 
 	function connect()
 	{
-		$this->link = new mysqli($this->host, $this->username, $this->password, $this->databaseName);
+		$this->link = new mysqli($this->host, $this->username, $this->password);
 		if (mysqli_connect_error())
 		{
 			echo mysqli_connect_error();
-			exit();
+			exit('Could not connect to MySQL host');
 		}
 		else
 		{
-			return $this->link;
+			$this->link->query('CREATE DATABASE IF NOT EXISTS '.$this->databaseName.';');
+			$this->link->select_db($this->databaseName);
+			return $this;
 		}
 	}
 
@@ -66,13 +68,13 @@ class DB
 	// Gets array of query results
 	function fetchArray($result, $resultType = MYSQLI_ASSOC)
 	{
-		return $result->fetch_array( $resultType );
+		return $result->fetch_array($resultType);
 	}
 	
 	// Fetches all result rows as an associative array, a numeric array, or both
 	function fetchAll($result, $resultType = MYSQLI_ASSOC)
 	{
-		return $result->fetch_all( $resultType );
+		return $result->fetch_all($resultType);
 	}
 	
 	// Get a result row as an enumerated array
@@ -84,7 +86,7 @@ class DB
 	// Free all MySQL result memory
 	function freeResult($result)
 	{
-		$this->link->free_result( $result );
+		$this->link->free_result($result);
 	}
 	
 	//Closes the database connection
