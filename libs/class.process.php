@@ -265,6 +265,4 @@ class ProcessCSV
 	{
 		echo $msg."\n";
 	}
-
-	
 }
